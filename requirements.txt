@@ -1,0 +1,8 @@
+aiogram
+APScheduler
+httpx
+typing
+asyncpg
+pydantic
+aiofiles
+cachetools
