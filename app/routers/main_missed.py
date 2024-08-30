@@ -31,9 +31,6 @@ async def main_dialogue(message: Message, bot: Bot, state: FSMContext):
 	user = dialogue_obj['user']
 	admin = dialogue_obj['admin']
 	dialogue = dialogue_obj['dialogue']
-	# if message.text and message.text != '':
-	# 	dialogue_obj['history'].append({'from': {'name': 'user', 'tg_user_id': user.tg_user_id}, 'text': message.text})
-
 
 	if message.content_type == 'text':
 		text = message.text.replace(str(user.tg_user_id), "").replace(f'@{user.tg_username}', "").replace(str(user.tg_username), "") if admin.tg_user_id in moderator_ids else message.text

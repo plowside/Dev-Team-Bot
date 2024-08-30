@@ -23,73 +23,62 @@ def kb_close(text: str = '❌ Закрыть') -> InlineKeyboardMarkup:
 
 
 
-def kb_choose_profession():
+
+def kb_order_choose():
 	keyboard = ikb_construct(
-		[ikb('Кодер', data='user:req:coder'), ikb('Дизайнер', data='user:req:designer')],
+		[ikb('Программирование', data='order:chs:programming'), ikb('Дизайн', data='order:chs:design')],
+		back_button=ikb('❌ Закрыть', data='utils:delete')
+	)
+	return keyboard.as_markup()
+
+def kb_application_choose():
+	keyboard = ikb_construct(
+		[ikb('Программист', data='application:chs:coder'), ikb('Дизайнер', data='application:chs:designer')],
 		back_button=ikb('❌ Закрыть', data='utils:delete')
 	)
 	return keyboard.as_markup()
 
 
-# Создание заказа
-def kb_create_order(state: str) -> InlineKeyboardMarkup:
-	if state in ['start', 'point_of_work', 'deadline', 'budget']:
+def kb_multi_state(req_type: str, req_sub_type: str, questions: dict, question_key: str, question_data: dict):
+	if not question_key:
 		keyboard = ikb_construct(
-			back_button=ikb('↪ Назад', data=f'missed:cst:{state}')
+			[ikb('Да', data='True'), ikb('Нет', data='False')],
+			back_button=ikb('↪ Назад', data='back')
 		)
-	elif state == 'create':
+		return keyboard.as_markup()
+	elif len(question_data.get('reply_kb', [])) > 0 or (len(question_data.get('reply_kb', [])) > 0 and question_data.get('is_file', False)):
+		keyboard = rkb_construct(
+			*[[rkb(z) for z in x] for x in question_data['reply_kb']],
+			[rkb('➡️ Пропустить')] if question_data['skipable'] else [],
+			[rkb('↪ Назад')]
+		)
+		return keyboard.as_markup(resize_keyboard=True)
+	elif len(question_data.get('inline_kb', [])) > 0 or (len(question_data.get('inline_kb', [])) > 0 and question_data.get('is_file', False)):
 		keyboard = ikb_construct(
-			[ikb('Создать заказ', data=f'missed:cod:y'), ikb('Отмена', data=f'missed:cod:n')],
-			back_button=ikb('↪ Назад', data=f'missed:cst:{state}')
+			*[[ikb(z, data=x[z]) for z in x] for x in question_data['inline_kb']],
+			[ikb('➡️ Пропустить', data='skip')] if question_data['skipable'] else [],
+			[ikb('↪ Назад', data='back')]
 		)
-	elif state == 'created':
+		return keyboard.as_markup()
+	elif question_data.get('skipable', False):
 		keyboard = ikb_construct(
-			back_button=ikb('↪ Назад', data=f'utils:menu:main')
+			[ikb('➡️ Пропустить', data='skip')],
+			back_button=ikb('↪ Назад', data='back')
 		)
+		return keyboard.as_markup()
+	elif question_data.get('bool', False):
+		trns = question_data.get('inline_kb', {})
+		keyboard = ikb_construct(
+			*[[ikb(z, data=x[z]) for z in x] for x in question_data['inline_kb']],
+			back_button=ikb('↪ Назад', data='back')
+		)
+		return keyboard.as_markup()
+	else:
+		keyboard = ikb_construct(
+			[ikb('↪ Назад', data='back')]
+		)
+		return keyboard.as_markup()
 
-	return keyboard.as_markup()
-
-
-# Создание заявки на кодера
-def kb_create_coder(state: str) -> InlineKeyboardMarkup:
-	if state in ['start', 'age', 'stack', 'portfolio', 'extra_information']:
-		keyboard = ikb_construct(
-			back_button=ikb('↪ Назад', data=f'missed:cst:{state}')
-		)
-	elif state == 'complete_test_task':
-		keyboard = ikb_construct(
-			[ikb('Да', data='missed:acd:y'), ikb('Нет', data='missed:acd:n')],
-			back_button=ikb('↪ Назад', data=f'missed:cst:{state}')
-		)
-	elif state == 'create':
-		keyboard = ikb_construct(
-			[ikb('Создать заявку', data=f'missed:cod:y'), ikb('Отмена', data=f'missed:cod:n')],
-			back_button=ikb('↪ Назад', data=f'missed:cst:{state}')
-		)
-	elif state == 'created':
-		keyboard = ikb_construct(
-			back_button=ikb('↪ Назад', data=f'utils:menu:main')
-		)
-
-	return keyboard.as_markup()
-
-# Создание заявки на дизайнера
-def kb_create_designer(state: str) -> InlineKeyboardMarkup:
-	if state in ['start', 'age', 'stack', 'services_provided', 'extra_information']:
-		keyboard = ikb_construct(
-			back_button=ikb('↪ Назад', data=f'missed:cst:{state}')
-		)
-	elif state == 'create':
-		keyboard = ikb_construct(
-			[ikb('Создать заявку', data=f'missed:cod:y'), ikb('Отмена', data=f'missed:cod:n')],
-			back_button=ikb('↪ Назад', data=f'missed:cst:{state}')
-		)
-	elif state == 'created':
-		keyboard = ikb_construct(
-			back_button=ikb('↪ Назад', data=f'utils:menu:main')
-		)
-
-	return keyboard.as_markup()
 
 
 # Информация

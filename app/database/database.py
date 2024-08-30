@@ -41,38 +41,13 @@ class AsyncPostgresDB:
 						created_at BIGINT
 					)
 				''',
-				'orders': '''
-					CREATE TABLE IF NOT EXISTS orders(
+				'requests': '''
+					CREATE TABLE IF NOT EXISTS requests(
 						id SERIAL PRIMARY KEY,
+						uuid TEXT,
 						user_id SERIAL REFERENCES users(id),
-						point_of_work TEXT,
-						deadline TEXT,
-						budget TEXT,
-						completed BOOL DEFAULT False,
-						created_at BIGINT
-					)
-				''',
-				'coders': '''
-					CREATE TABLE IF NOT EXISTS coders(
-						id SERIAL PRIMARY KEY,
-						user_id SERIAL REFERENCES users(id),
-						age TEXT,
-						stack TEXT,
-						portfolio TEXT,
-						extra_information TEXT,
-						complete_test_task BOOL,
-						completed BOOL DEFAULT False,
-						created_at BIGINT
-					)
-				''',
-				'designers': '''
-					CREATE TABLE IF NOT EXISTS designers(
-						id SERIAL PRIMARY KEY,
-						user_id SERIAL REFERENCES users(id),
-						age TEXT,
-						stack TEXT,
-						services_provided TEXT,
-						extra_information TEXT,
+						rqst TEXT,
+						questions_answers TEXT,
 						completed BOOL DEFAULT False,
 						created_at BIGINT
 					)
