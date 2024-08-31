@@ -141,7 +141,7 @@ async def input_req_(call: CallbackQuery, bot: Bot, state: FSMContext):
 	question_key, question_data, is_first, is_last = get_question(req_type, req_sub_type, answers, 'next')
 	this_question_key, this_question_data, this_is_first, this_is_last = get_question(req_type, req_sub_type, answers, 'this')
 	if not question_key:
-		if (cd[0] == 'skip' and old_question_data.get('skipable', False)): # Сообщение с проверкой создание заявки
+		if (cd[0] == 'skip' and old_question_data.get('skipable', False)) or (cd[0] == 'continue' and old_question_data.get('is_file', False)): # Сообщение с проверкой создание заявки
 			text = message_tree_construct(req_type, req_sub_type, answers)
 			msg = await call.message.answer(f'{text}\n\n<i>Создать {this_trns.get("l", {}).get("v", "")}?</i>', reply_markup=kb_multi_state(req_type, req_sub_type, questions, question_key, question_data))
 			await state.update_data(answers=answers, msgs=[msg])
@@ -152,7 +152,11 @@ async def input_req_(call: CallbackQuery, bot: Bot, state: FSMContext):
 				if not ast.literal_eval(cd[0]):
 					await call.answer(f'Создание {this_trns.get("l", {}).get("r", "")} отменено', show_alert=True)
 					return await create_order(call.message, bot, state) if req_type == 'order' else await create_application(call.message, bot, state)
-			except: ...
+			except:
+				text = message_tree_construct(req_type, req_sub_type, answers)
+				msg = await call.message.answer(f'{text}\n\n<i>Создать {this_trns.get("l", {}).get("v", "")}?</i>', reply_markup=kb_multi_state(req_type, req_sub_type, questions, question_key, question_data))
+				await state.update_data(answers=answers, msgs=[msg])
+				return
 			user = await Userx.get(tg_user_id=tg_user_id)
 			request = await Requestx.add(user_id=user.id, req_type=req_type, req_sub_type=req_sub_type, questions_answers=json.dumps(answers))
 			text = message_tree_construct(req_type, req_sub_type, answers, h1=False)
