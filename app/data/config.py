@@ -2,9 +2,9 @@ import json
 
 ### TELEGRAM ###
 telegram_token = '7306244866:AAG8kB3Uwhx71sxJ-FrhgLBDTBNQd2eeYWI' # Токен телеграм бота
-admin_ids = [6315225351] # ID админов
-moderator_ids = [6554101798] # ID модераторов
-
+admin_ids = [6315225351, 6554101798] # ID админов
+moderator_ids = [5749609907, 7321334922] # ID модераторов
+filestorage_id = -1002177894042 # ID чата для хранения файлов
 ## URL ##
 url_administrator = 'https://t.me/plowside'
 url_portfolio = 'https://t.me/plowside'
@@ -17,7 +17,6 @@ database_config = {
 	'host': 'localhost',
 	'port': 5432
 }
-
 
 req_questions = {
 	'order': {
@@ -151,7 +150,7 @@ req_questions = {
 				'q': 'Готовы выполнить тестовое задание?',
 				'bool': True,
 				'inline_kb': [
-					{'True': 'Да', 'False': 'Нет'}
+					{'Да': 'True', 'Нет': 'False'}
 				]
 			}
 		},
@@ -186,6 +185,13 @@ req_questions = {
 			}
 		}
 	}
+}
+
+trns_all = {
+	'kb_admin_requests': {'q': {'order': {'programming': 'Программирование', 'design': 'Дизайн'}, 'application': {'coder': 'Кодер', 'designer': 'Дизайнер'}}, 'type': {0: '⚪️ Все', 1: 'Заказы', 2: 'Заявки'}, 'status': {0: '⚪️ Все', 1: '🟢 Активные', 2: '🔴 Завершенные'}},
+	'morph': {'order': {'l': {"i": "заказ", "r": "заказа", "d": "заказу", "v": "заказ", "t": "заказом", "p": "заказе"}, 'u': {"i": "Заказ", "r": "Заказа", "d": "Заказу", "v": "Заказ", "t": "Заказом", "p": "Заказе"}, 'end': {'n': 'ый', 'm': 'ые', 'zh': ''}}, 'application': {'l': {"i": "заявка", "r": "заявки", "d": "заявке", "v": "заявку", "t": "заявкой", "p": "заявке"}, 'u': {"i": "Заявка", "r": "Заявки", "d": "Заявке", "v": "Заявку", "t": "Заявкой", "p": "Заявке"}, 'end': {'n': 'ая', 'm': 'ые', 'zh': 'a'}}},
+	'h1': {'order': 'Создание заказа\n', 'application': 'Создание заявки\n'},
+	'indicators': {'emoji': {True: '🟢', False: '🔴'}, 'emoji2': {True: '🟡', False: '🔴'}}
 }
 
 

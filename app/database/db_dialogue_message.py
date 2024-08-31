@@ -67,3 +67,11 @@ class DialogueMessagex:
 			sql += f' WHERE id = ${len(kwargs)+1}'
 
 			resp = await conn.execute(sql, *params)
+
+	@staticmethod
+	async def delete(**kwargs):
+		async with db.pool.acquire() as conn:
+			sql = 'DELETE FROM dialogue_messages'
+			sql, params = sql_where_format(sql, **kwargs)
+
+			resp = await conn.execute(sql, *params)

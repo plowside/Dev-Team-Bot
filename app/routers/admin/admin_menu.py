@@ -26,6 +26,7 @@ router = Router(name=__name__)
 # Меню админа
 @router.message(F.text == '🧑🏻‍💻 Админ меню')
 async def create_order(message: Message, bot: Bot, state: FSMContext):
+	tg_user_id, username, firstname = get_user(message)
 	await state.clear()
 
-	await message.answer('🧑🏻‍💻 Админ меню', reply_markup=kb_admin_menu())
+	await message.answer('🧑🏻‍💻 Админ меню', reply_markup=kb_admin_menu(tg_user_id))

@@ -46,7 +46,8 @@ class AsyncPostgresDB:
 						id SERIAL PRIMARY KEY,
 						uuid TEXT,
 						user_id SERIAL REFERENCES users(id),
-						rqst TEXT,
+						req_type TEXT,
+						req_sub_type TEXT,
 						questions_answers TEXT,
 						completed BOOL DEFAULT False,
 						created_at BIGINT

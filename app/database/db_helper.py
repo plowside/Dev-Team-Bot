@@ -17,11 +17,11 @@ def sql_update_format(sql, **kwargs) -> tuple[str, list]:
 	sql += ', '.join([f'{x} = ${i}' for i, x in enumerate(kwargs, start=1)])
 	return sql, list(kwargs.values())
 
-
 # Форматирование запроса с аргументами
 def sql_where_format(sql, **kwargs) -> tuple[str, list]:
-	sql += ' WHERE '
-
-	sql += ' AND '.join([f'{item} = ${i}' for i, item in enumerate(kwargs, start=1)])
-
-	return sql, list(kwargs.values())
+	kwargs = {key: value for key, value in kwargs.items() if value is not None}
+	values = [value for key, value in kwargs.items()]
+	if len(values) > 0:
+		sql += ' WHERE '
+		sql += ' AND '.join([f'{item} = ${i}' for i, item in enumerate(kwargs, start=1)])
+	return sql, values

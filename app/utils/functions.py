@@ -53,12 +53,15 @@ async def del_message(*messages) -> None:
 		except:
 			...
 
-async def send_admin(bot, text, keyboard=None):
+async def send_admin(bot, text, reply_markup=None):
 	for user_id in admin_ids:
 		try:
-			await bot.send_message(user_id, text, reply_markup=keyboard, disable_web_page_preview=True)
+			await bot.send_message(user_id, text, reply_markup=reply_markup, disable_web_page_preview=True)
 		except: ...
 
+async def upload_file(bot, from_tg_id: int, message_id: int):
+	msg = await bot.copy_message(filestorage_id, from_tg_id, message_id)
+	return filestorage_id, msg.message_id
 
 
 
@@ -66,10 +69,50 @@ async def send_admin(bot, text, keyboard=None):
 async def get_bot_info(bot):
 	return await bot.get_me()
 
+def message_tree_construct(req_type: str, req_sub_type: str, answers: dict, h1: bool = True):
+	questions = req_questions.get(req_type, {}).get(req_sub_type, {})
+	trns = trns_all.get('h1', {})
+	text = trns.get(req_type, '') if h1 else ''
+	for i, question in enumerate(answers, start=1):
+		prefix = '└ ' if i == len(answers) else '├ '
+		endfix = '' if i == len(answers) else '\n'
+		_text = answers[question] if isinstance(answers[question], str) else ('Да' if answers[question] else 'Нет') if isinstance(answers[question], bool) else f'{len(answers[question])} файл{"ов" if len(answers[question]) in [0, 5, 6, 7, 8, 9] else "" if len(answers[question]) == 1 else "а" if len(answers[question]) >= 2 else ""}'
+		text += f'{prefix}{questions.get(question, {}).get("q", question).replace(":", "")}: <code>{_text}</code>{endfix}'
+	return text.replace('::', ':')
+
+def get_question(req_type: str, req_sub_type: str, answers: dict = None, direction: str = 'next'):
+	questions = req_questions.get(req_type, {}).get(req_sub_type, {})
+	if answers is None: return questions
+	questions_list = list(questions.keys())
+	if len(answers) == 0:
+		question = questions_list[0]
+		return (question, questions.get(question), True, (len(questions_list) - 0) >= 0)
+	elif len(questions) == 1:
+		question = questions_list[0]
+		return (question, questions.get(question), True, True)
+
+	this_question = questions_list.index(list(answers.keys())[-1])
+	if direction == 'prev': this_question_idx = this_question - 1
+	elif direction == 'this': this_question_idx = this_question
+	elif direction == 'next': this_question_idx = this_question + 1
+	if (len(questions_list) - this_question_idx) <= 0:
+		return (None, None, None, None)
+
+	question = questions_list[this_question_idx]
+	# question_key, question_data, is_first, is_last
+	return (question, questions.get(question), this_question_idx == 0, (len(questions_list) - this_question_idx) >= 0)
+
 def paginate_list(lst: list, items_per_page: int, current_page: int = 0):
 	start_idx = current_page * items_per_page
 	end_idx = start_idx + items_per_page
 	return lst[start_idx:end_idx]
+
+def is_uuid4(text):
+    try:
+        uuid_obj = uuid.UUID(text, version=4)
+        return True
+    except ValueError:
+        return False
 
 def gen_txn(length = 16) -> int:
 	return (''.join(secrets.choice(string.ascii_letters + string.digits) for _ in range(length))).upper()
