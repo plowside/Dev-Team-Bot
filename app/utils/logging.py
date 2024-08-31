@@ -1,13 +1,14 @@
 # -*- coding: utf- 8 -*-
-import logging
+import logging, os
 
-
+logs_path = 'logs/latest.log'
+os.makedirs(logs_path, exist_ok=True)
 # Формат логгирования
 log_formatter_file = logging.Formatter(u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(asctime)s]  %(message)s')
 log_formatter_console = logging.Formatter(u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(asctime)s]  %(message)s')
 
 # Логгирование в файл tgbot/data/logs.log
-file_handler = logging.FileHandler('logs/latest.log', 'w', 'utf-8')
+file_handler = logging.FileHandler(logs_path, 'w', 'utf-8')
 file_handler.setFormatter(log_formatter_file)
 file_handler.setLevel(logging.INFO)
 
