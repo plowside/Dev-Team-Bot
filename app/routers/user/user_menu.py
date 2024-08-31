@@ -47,13 +47,13 @@ async def callback_req(call: CallbackQuery, bot: Bot, state: FSMContext, custom_
 		if len(questions) == 0:
 			await call.answer('Неизвестный тип заказа, попробуйте позже', show_alert=True)
 			return
-		await del_message(call.message)
+		# await del_message(call.message)
 
 		answers = {}
 		files = {}
 		question_key, question_data, is_first, is_last = get_question(req_type, req_sub_type, answers, 'next')
 		text = message_tree_construct(req_type, req_sub_type, answers)
-		msg = await call.message.answer(f'{text}\n\n<i>{question_data.get("q", question_key)}</i>', reply_markup=kb_multi_state(req_type, req_sub_type, questions, question_key, question_data))
+		msg = await call.message.edit_text(f'{text}\n\n<i>{question_data.get("q", question_key)}</i>', reply_markup=kb_multi_state(req_type, req_sub_type, questions, question_key, question_data))
 		await state.set_state('input_req')
 
 		await state.update_data(req_type=req_type, req_sub_type=req_sub_type, questions=questions, answers=answers, files=files, msgs=[call.message, msg])
@@ -120,16 +120,17 @@ async def input_req_(call: CallbackQuery, bot: Bot, state: FSMContext):
 	files = state_data.get('files', {})
 	this_trns = trns.get(req_type, {})
 
-	await del_message(*state_data.get('msgs', []), call.message)
 	old_question_key, old_question_data, is_first, is_last = get_question(req_type, req_sub_type, answers, 'next')
 
 	if cd[0] == 'skip' and old_question_data.get('skipable', False): # Пропустить вопрос
 		answers[old_question_key] = 'Пропущено'
 	elif cd[0] == 'continue' and old_question_data.get('is_file', False): # Закончить загрузку файлов
+		await del_message(*state_data.get('msgs', []))
 		answers[old_question_key] = files.get(old_question_key, [])
 	elif cd[0] == 'back': # Назад
 		question_key, question_data, is_first, is_last = get_question(req_type, req_sub_type, answers, 'this')
 		if len(answers) == 0: # В главное меню
+			await del_message(*state_data.get('msgs', []), call.message)
 			return await create_order(call.message, bot, state) if req_type == 'order' else await create_application(call.message, bot, state)
 		if question_key in answers: del answers[question_key]
 	elif not old_question_key: # Создание заявки
@@ -143,7 +144,7 @@ async def input_req_(call: CallbackQuery, bot: Bot, state: FSMContext):
 	if not question_key:
 		if (cd[0] == 'skip' and old_question_data.get('skipable', False)) or (cd[0] == 'continue' and old_question_data.get('is_file', False)): # Сообщение с проверкой создание заявки
 			text = message_tree_construct(req_type, req_sub_type, answers)
-			msg = await call.message.answer(f'{text}\n\n<i>Создать {this_trns.get("l", {}).get("v", "")}?</i>', reply_markup=kb_multi_state(req_type, req_sub_type, questions, question_key, question_data))
+			msg = await call_msg_answer(call, text=f'{text}\n\n<i>Создать {this_trns.get("l", {}).get("v", "")}?</i>', reply_markup=kb_multi_state(req_type, req_sub_type, questions, question_key, question_data))
 			await state.update_data(answers=answers, msgs=[msg])
 			return
 		else: # Создание заявки
@@ -154,18 +155,18 @@ async def input_req_(call: CallbackQuery, bot: Bot, state: FSMContext):
 					return await create_order(call.message, bot, state) if req_type == 'order' else await create_application(call.message, bot, state)
 			except:
 				text = message_tree_construct(req_type, req_sub_type, answers)
-				msg = await call.message.answer(f'{text}\n\n<i>Создать {this_trns.get("l", {}).get("v", "")}?</i>', reply_markup=kb_multi_state(req_type, req_sub_type, questions, question_key, question_data))
+				msg = await call_msg_answer(call, text=f'{text}\n\n<i>Создать {this_trns.get("l", {}).get("v", "")}?</i>', reply_markup=kb_multi_state(req_type, req_sub_type, questions, question_key, question_data))
 				await state.update_data(answers=answers, msgs=[msg])
 				return
 			user = await Userx.get(tg_user_id=tg_user_id)
 			request = await Requestx.add(user_id=user.id, req_type=req_type, req_sub_type=req_sub_type, questions_answers=json.dumps(answers))
 			text = message_tree_construct(req_type, req_sub_type, answers, h1=False)
-			msg = await call.message.answer(f'{this_trns.get("u", {}).get("i", "")} создан{this_trns.get("end", {}).get("zh", "")}\nID {this_trns.get("u", {}).get("r", "")}: <code>{request.uuid}</code>\n\n<b>📝 Информация о {this_trns.get("l", {}).get("p", "")}:</b>\n{text}')
+			msg = await call_msg_answer(call, text=f'{this_trns.get("u", {}).get("i", "")} создан{this_trns.get("end", {}).get("zh", "")}\nID {this_trns.get("u", {}).get("r", "")}: <code>{request.uuid}</code>\n\n<b>📝 Информация о {this_trns.get("l", {}).get("p", "")}:</b>\n{text}')
 			await send_admin(bot, f'<b>Нов{this_trns.get("end", {}).get("n", "")} {this_trns.get("l", {}).get("i", "")}</b>\n├ ID {this_trns.get("l", {}).get("i", "")}:  <code>{request.uuid}</code>\n└ TG ID Пользователя:  <code>{user.tg_user_id}</code>', reply_markup=kb_back(f'admin:request:s:{request.id}', f'Открыть {this_trns.get("l", {}).get("v", "")}'))
 			return
 	
 	text = message_tree_construct(req_type, req_sub_type, answers)
-	msg = await call.message.answer(f'{text}\n\n<i>{question_data.get("q", question_key)}</i>', reply_markup=kb_multi_state(req_type, req_sub_type, questions, question_key, question_data))
+	msg = await call_msg_answer(call, text=f'{text}\n\n<i>{question_data.get("q", question_key)}</i>', reply_markup=kb_multi_state(req_type, req_sub_type, questions, question_key, question_data))
 	await state.update_data(answers=answers, files=files, msgs=[msg])
 
 

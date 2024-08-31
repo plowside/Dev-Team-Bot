@@ -52,6 +52,11 @@ async def del_message(*messages) -> None:
 			await message.delete()
 		except:
 			...
+async def call_msg_answer(call, **kwargs):
+	try: await call.message.edit_text(**kwargs)
+	except:
+		await call.message.answer(**kwargs)
+		await del_message(call.message)
 
 async def send_admin(bot, text, reply_markup=None):
 	for user_id in admin_ids:
@@ -72,7 +77,12 @@ async def get_bot_info(bot):
 def message_tree_construct(req_type: str, req_sub_type: str, answers: dict, h1: bool = True):
 	questions = req_questions.get(req_type, {}).get(req_sub_type, {})
 	trns = trns_all.get('h1', {})
-	text = trns.get(req_type, '') if h1 else ''
+	if h1:
+		text = f"{trns.get(req_type, '').get('header')}\n"
+		if len(answers) > 0: text += f"├ {trns.get(req_type, '').get('req_name').format(req_type_trns=trns_all.get('kb_admin_requests', {}).get('q', {}).get(req_type, {}).get(req_sub_type, 'Неизвестная'))}\n"
+		else: text += f"└ {trns.get(req_type, '').get('req_name').format(req_type_trns=trns_all.get('kb_admin_requests', {}).get('q', {}).get(req_type, {}).get(req_sub_type, 'Неизвестная'))}"
+	else:
+		text = ''
 	for i, question in enumerate(answers, start=1):
 		prefix = '└ ' if i == len(answers) else '├ '
 		endfix = '' if i == len(answers) else '\n'
