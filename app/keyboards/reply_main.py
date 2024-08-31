@@ -9,8 +9,8 @@ from data.config import admin_ids, moderator_ids
 # Кнопки главного меню
 def kb_main_menu(user_id) -> ReplyKeyboardMarkup:
 	keyboard = rkb_construct(
-		[rkb('Сделать заказ'), rkb('Подать заявку в студию')],
-		[rkb('Информация')]
+		[rkb('🔥 Сделать заказ'), rkb('💼 Вступить в студию')],
+		[rkb('ℹ️ Информация')]
 	)
 	
 	if user_id in [*admin_ids, *moderator_ids]:

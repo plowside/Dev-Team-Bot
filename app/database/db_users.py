@@ -1,5 +1,6 @@
 # -*- coding: utf- 8 -*-
 from pydantic import BaseModel
+from typing import Optional
 
 from .database import db
 from .db_helper import *
@@ -10,10 +11,10 @@ from utils.functions import get_unix
 class UserModel(BaseModel):
 	id: int
 	tg_user_id: int
-	tg_username: str | None = None
-	tg_firstname: str | None = None
-	referrer_from_user_id: int | None = None
-	created_at: int | None = None
+	tg_username: Optional[str] = None
+	tg_firstname: Optional[str] = None
+	referrer_from_user_id: Optional[int] = None
+	created_at: Optional[int] = None
 
 
 # Работа с юзером

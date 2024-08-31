@@ -1,5 +1,6 @@
 # -*- coding: utf- 8 -*-
 from pydantic import BaseModel
+from typing import Optional
 
 from .database import db
 from .db_helper import *
@@ -12,7 +13,7 @@ class DialogueMessageModel(BaseModel):
 	dialogue_id: int
 	message_id: int
 	message_content_type: str
-	message_text: str | None = None
+	message_text: Optional[str] = None
 	from_user_id: int
 	from_user_tg_id: int
 	from_user_type: str

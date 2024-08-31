@@ -26,14 +26,14 @@ def kb_close(text: str = '❌ Закрыть') -> InlineKeyboardMarkup:
 
 def kb_order_choose():
 	keyboard = ikb_construct(
-		[ikb('Программирование', data='req:order:chs:programming'), ikb('Дизайн', data='req:order:chs:design')],
+		[ikb('⚙️ Программирование', data='req:order:chs:programming'), ikb('🖌 Дизайн', data='req:order:chs:design')],
 		back_button=ikb('❌ Закрыть', data='utils:delete')
 	)
 	return keyboard.as_markup()
 
 def kb_application_choose():
 	keyboard = ikb_construct(
-		[ikb('Программист', data='req:application:chs:coder'), ikb('Дизайнер', data='req:application:chs:designer')],
+		[ikb('⚙️ Кодер', data='req:application:chs:coder'), ikb('🖌 Дизайнер', data='req:application:chs:designer')],
 		back_button=ikb('❌ Закрыть', data='utils:delete')
 	)
 	return keyboard.as_markup()
@@ -83,7 +83,7 @@ def kb_multi_state(req_type: str, req_sub_type: str, questions: dict, question_k
 # Информация
 def kb_info() -> InlineKeyboardMarkup:
 	keyboard = ikb_construct(
-		[ikb('👤 Администратор', url=url_administrator), ikb('📝 Портфолио', url=url_portfolio)],
+		[ikb('📍 Администратор', url=url_administrator), ikb('🖼 Портфолио', url=url_portfolio)],
 		back_button=ikb('❌ Закрыть', data='utils:delete')
 	)
 	

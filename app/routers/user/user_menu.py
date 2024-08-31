@@ -24,16 +24,16 @@ router = Router(name=__name__)
 ################################### MESSAGE ####################################
 
 # Сделать заказ
-@router.message(F.text == 'Сделать заказ')
+@router.message(F.text == '🔥 Сделать заказ')
 async def create_order(message: Message, bot: Bot, state: FSMContext):
 	await state.clear()
-	await message.answer('Выберите услугу которая вас интересует', reply_markup=kb_order_choose())
+	await message.answer('<b>🔥 Сделать заказ</b>\n└ Услуга: <code>Не выбрана</code>\n\n<i>♦️ Выберите один из предложенных вариантов.</i>', reply_markup=kb_order_choose())
 
 # Подать заявку на кодера\дизайнера
-@router.message(F.text == 'Подать заявку в студию')
+@router.message(F.text == '💼 Вступить в студию')
 async def create_application(message: Message, bot: Bot, state: FSMContext):
 	await state.clear()
-	await message.answer('Выберите кем хотите быть', reply_markup=kb_application_choose())
+	await message.answer('<b>💼 Вступить в студию</b>\n└ Должность: <code>Не выбрана</code>\n\n<i>♦️ Выберите один из предложенных вариантов.</i>ь', reply_markup=kb_application_choose())
 
 
 @router.callback_query(F.data.startswith('req'))
@@ -45,7 +45,7 @@ async def callback_req(call: CallbackQuery, bot: Bot, state: FSMContext, custom_
 		req_sub_type = cd[3]
 		questions = get_question(req_type, req_sub_type)
 		if len(questions) == 0:
-			await call.answer('Неизвестный тип заказа, попробуй позже', show_alert=True)
+			await call.answer('Неизвестный тип заказа, попробуйте позже', show_alert=True)
 			return
 		await del_message(call.message)
 
@@ -178,8 +178,8 @@ async def input_req_(call: CallbackQuery, bot: Bot, state: FSMContext):
 
 
 # Ответы на вопросы
-@router.message(F.text == 'Информация')
+@router.message(F.text == 'ℹ️ Информация')
 async def faq(message: Message, bot: Bot, state: FSMContext):
 	await state.clear()
 
-	await message.answer('Информация', disable_web_page_preview=True, reply_markup=kb_info())
+	await message.answer('<b>💻 KILLA STUDIO — Команда профессионалов.</b>\nМы верим, что каждая деталь важна, и стремимся создавать решения, которые вдохновляют, удивляют и приносят пользу. Вне зависимости от того, нужен ли вам стильный и функциональный веб-сайт, мобильное приложение или креативный дизайн, мы готовы взяться за проект любой сложности.', disable_web_page_preview=True, reply_markup=kb_info())
