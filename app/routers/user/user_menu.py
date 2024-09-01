@@ -53,7 +53,7 @@ async def callback_req(call: CallbackQuery, bot: Bot, state: FSMContext, custom_
 		files = {}
 		question_key, question_data, is_first, is_last = get_question(req_type, req_sub_type, answers, 'next')
 		text = message_tree_construct(req_type, req_sub_type, answers)
-		msg = await call.message.edit_text(f'{text}\n\n<i>{question_data.get("q", question_key)}</i>', reply_markup=kb_multi_state(req_type, req_sub_type, questions, question_key, question_data))
+		msg = await call.message.edit_text(f'{text}\n\n{question_data.get("user_q", question_key)}', reply_markup=kb_multi_state(req_type, req_sub_type, questions, question_key, question_data))
 		await state.set_state('input_req')
 
 		await state.update_data(req_type=req_type, req_sub_type=req_sub_type, questions=questions, answers=answers, files=files, msgs=[call.message, msg])
@@ -97,12 +97,12 @@ async def input_req(message: Message, bot: Bot, state: FSMContext):
 	question_key, question_data, is_first, is_last = get_question(req_type, req_sub_type, answers, 'next')
 	if not question_key:
 		text = message_tree_construct(req_type, req_sub_type, answers)
-		msg = await message.answer(f'{text}\n\n<i>Создать {this_trns.get("l", {}).get("v", "")}?</i>', reply_markup=kb_multi_state(req_type, req_sub_type, questions, question_key, question_data))
+		msg = await message.answer(f'{text}\n\nСоздать {this_trns.get("l", {}).get("v", "")}?', reply_markup=kb_multi_state(req_type, req_sub_type, questions, question_key, question_data))
 		await state.update_data(answers=answers, msgs=[msg])
 		return
 
 	text = message_tree_construct(req_type, req_sub_type, answers)
-	msg = await message.answer(f'{text}\n\n<i>{question_data.get("q", question_key)}</i>', reply_markup=kb_multi_state(req_type, req_sub_type, questions, question_key, question_data))
+	msg = await message.answer(f'{text}\n\n{question_data.get("user_q", question_key)}', reply_markup=kb_multi_state(req_type, req_sub_type, questions, question_key, question_data))
 	await state.update_data(answers=answers, msgs=[msg])
 
 
@@ -144,7 +144,7 @@ async def input_req_(call: CallbackQuery, bot: Bot, state: FSMContext):
 	if not question_key:
 		if (cd[0] == 'skip' and old_question_data.get('skipable', False)) or (cd[0] == 'continue' and old_question_data.get('is_file', False)): # Сообщение с проверкой создание заявки
 			text = message_tree_construct(req_type, req_sub_type, answers)
-			msg = await call_msg_answer(call, text=f'{text}\n\n<i>Создать {this_trns.get("l", {}).get("v", "")}?</i>', reply_markup=kb_multi_state(req_type, req_sub_type, questions, question_key, question_data))
+			msg = await call_msg_answer(call, text=f'{text}\n\nСоздать {this_trns.get("l", {}).get("v", "")}?', reply_markup=kb_multi_state(req_type, req_sub_type, questions, question_key, question_data))
 			await state.update_data(answers=answers, msgs=[msg])
 			return
 		else: # Создание заявки
@@ -155,7 +155,7 @@ async def input_req_(call: CallbackQuery, bot: Bot, state: FSMContext):
 					return await create_order(call.message, bot, state) if req_type == 'order' else await create_application(call.message, bot, state)
 			except:
 				text = message_tree_construct(req_type, req_sub_type, answers)
-				msg = await call_msg_answer(call, text=f'{text}\n\n<i>Создать {this_trns.get("l", {}).get("v", "")}?</i>', reply_markup=kb_multi_state(req_type, req_sub_type, questions, question_key, question_data))
+				msg = await call_msg_answer(call, text=f'{text}\n\nСоздать {this_trns.get("l", {}).get("v", "")}?', reply_markup=kb_multi_state(req_type, req_sub_type, questions, question_key, question_data))
 				await state.update_data(answers=answers, msgs=[msg])
 				return
 			user = await Userx.get(tg_user_id=tg_user_id)
@@ -166,7 +166,7 @@ async def input_req_(call: CallbackQuery, bot: Bot, state: FSMContext):
 			return
 	
 	text = message_tree_construct(req_type, req_sub_type, answers)
-	msg = await call_msg_answer(call, text=f'{text}\n\n<i>{question_data.get("q", question_key)}</i>', reply_markup=kb_multi_state(req_type, req_sub_type, questions, question_key, question_data))
+	msg = await call_msg_answer(call, text=f'{text}\n\n{question_data.get("user_q", question_key)}', reply_markup=kb_multi_state(req_type, req_sub_type, questions, question_key, question_data))
 	await state.update_data(answers=answers, files=files, msgs=[msg])
 
 

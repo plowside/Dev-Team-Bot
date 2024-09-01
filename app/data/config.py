@@ -8,6 +8,8 @@ filestorage_id = -1002177894042 # ID чата для хранения файло
 ## URL ##
 url_administrator = 'https://t.me/KillaCoder'
 url_portfolio = 'https://t.me/KillaPortfolio'
+url_rules = 'https://telegra.ph/User-agreement-08-31-36'
+url_tz = 'https://telegra.ph/technical-specification-08-31'
 
 ### GENERAL ###
 database_config = {
@@ -23,6 +25,7 @@ req_questions = {
 		'programming': {
 			'development_reason': {
 				'q': 'Разработка:',
+				'user_q': '<b>Что необходимо разработать?</b>\n\n<i>♦️ Укажите что нужно разработать или выберите один из предложенных вариантов.</i>',
 				'skipable': False,
 				'is_file': False,
 				'inline_kb': [
@@ -32,6 +35,7 @@ req_questions = {
 			},
 			'programming_language': {
 				'q': 'Язык программирования:',
+				'user_q': 'Язык программирования:(zxc)',
 				'skipable': True,
 				'is_file': False,
 				'inline_kb': [
@@ -42,6 +46,7 @@ req_questions = {
 			},
 			'deadline': {
 				'q': 'Желаемые сроки выполнения:',
+				'user_q': 'Желаемые сроки выполнения:(zxc)',
 				'skipable': True,
 				'is_file': False,
 				'inline_kb': [
@@ -51,12 +56,14 @@ req_questions = {
 			},
 			'examples': {
 				'q': 'Примеры:',
+				'user_q': 'Примеры:(zxc)',
 				'skipable': True,
 				'is_file': True,
 				'reply_kb': []
 			},
 			'budget': {
 				'q': 'Бюджет:',
+				'user_q': 'Бюджет:(zxc)',
 				'skipable': False,
 				'is_file': False,
 				'inline_kb': [
@@ -66,6 +73,7 @@ req_questions = {
 			},
 			'technical_specification': {
 				'q': 'Техническое задание:',
+				'user_q': 'Техническое задание:(zxc)',
 				'skipable': False,
 				'is_file': True,
 				'reply_kb': []
@@ -75,6 +83,7 @@ req_questions = {
 		'design': {
 			'design_reason': {
 				'q': 'Оформление:',
+				'user_q': 'Оформление:(zxc)',
 				'skipable': False,
 				'is_file': False,
 				'inline_kb': [
@@ -84,6 +93,7 @@ req_questions = {
 			},
 			'style': {
 				'q': 'Стиль:',
+				'user_q': 'Стиль:(zxc)',
 				'skipable': False,
 				'is_file': False,
 				'inline_kb': [
@@ -93,6 +103,7 @@ req_questions = {
 			},
 			'deadline': {
 				'q': 'Желаемые сроки выполнения:',
+				'user_q': 'Желаемые сроки выполнения:(zxc)',
 				'skipable': True,
 				'is_file': False,
 				'inline_kb': [
@@ -102,12 +113,14 @@ req_questions = {
 			},
 			'examples': {
 				'q': 'Примеры:',
+				'user_q': 'Примеры:(zxc)',
 				'skipable': True,
 				'is_file': True,
 				'reply_kb': []
 			},
 			'budget': {
 				'q': 'Бюджет:',
+				'user_q': 'Бюджет:(zxc)',
 				'skipable': False,
 				'is_file': False,
 				'inline_kb': [
@@ -117,6 +130,7 @@ req_questions = {
 			},
 			'colors': {
 				'q': 'Цвета:',
+				'user_q': 'Цвета:(zxc)',
 				'skipable': True,
 				'is_file': True,
 				'inline_kb': [
@@ -126,6 +140,7 @@ req_questions = {
 			},
 			'additional_info': {
 				'q': 'Дополнительная информация:',
+				'user_q': 'Дополнительная информация:(zxc)',
 				'skipable': True,
 				'is_file': True,
 				'reply_kb': []
@@ -137,30 +152,35 @@ req_questions = {
 		'coder': {
 			'age': {
 				'q': 'Возраст:',
+				'user_q': 'Возраст:(zxc)',
 				'skipable': False,
 				'is_file': False,
 				'reply_kb': []
 			},
 			'stack': {
 				'q': 'Стек навыков:',
+				'user_q': 'Стек навыков:(zxc)',
 				'skipable': False,
 				'is_file': False,
 				'reply_kb': []
 			},
 			'portfolio': {
 				'q': 'Портфолио/Примеры работ:',
+				'user_q': 'Портфолио/Примеры работ:(zxc)',
 				'skipable': False,
 				'is_file': True,
 				'reply_kb': []
 			},
 			'additional_info': {
 				'q': 'Дополнительная информация:',
+				'user_q': 'Дополнительная информация:(zxc)',
 				'skipable': True,
 				'is_file': True,
 				'reply_kb': []
 			},
 			'complete_test_task': {
 				'q': 'Готовы выполнить тестовое задание?',
+				'user_q': 'Готовы выполнить тестовое задание?(zxc)',
 				'bool': True,
 				'inline_kb': [
 					{'Да': 'True', 'Нет': 'False'}
@@ -171,12 +191,14 @@ req_questions = {
 		'designer': {
 			'age': {
 				'q': 'Возраст:',
+				'user_q': 'Возраст:(zxc)',
 				'skipable': False,
 				'is_file': False,
 				'reply_kb': []
 			},
 			'using_programms': {
 				'q': 'Используемые программы:',
+				'user_q': 'Используемые программы:(zxc)',
 				'skipable': False,
 				'is_file': False,
 				'inline_kb': [
@@ -186,6 +208,7 @@ req_questions = {
 			},
 			'services_provided': {
 				'q': 'Предоставляемые услуги:',
+				'user_q': 'Предоставляемые услуги:(zxc)',
 				'skipable': False,
 				'is_file': True,
 				'inline_kb': [
@@ -195,6 +218,7 @@ req_questions = {
 			},
 			'additional_info': {
 				'q': 'Дополнительная информация:',
+				'user_q': 'Дополнительная информация:(zxc)',
 				'skipable': True,
 				'is_file': True,
 				'reply_kb': []

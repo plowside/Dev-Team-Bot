@@ -84,9 +84,10 @@ def kb_multi_state(req_type: str, req_sub_type: str, questions: dict, question_k
 def kb_info() -> InlineKeyboardMarkup:
 	keyboard = ikb_construct(
 		[ikb('📍 Администратор', url=url_administrator), ikb('🖼 Портфолио', url=url_portfolio)],
+		[ikb('📝 Пользовательское соглашение', url=url_rules)], 
+		[ikb('📜 Как оформить техническое задание?', url=url_tz)],
 		back_button=ikb('❌ Закрыть', data='utils:delete')
 	)
-	
 	return keyboard.as_markup()
 ################################################################################
 ################################### ПЛАТЕЖИ ####################################
