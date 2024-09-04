@@ -46,17 +46,18 @@ def ikb(text: str, data: str = None, url: str = None) -> InlineKeyboardButton:
 def get_user(message):
 	return [message.from_user.id, (message.from_user.username.lower() if message.from_user.username is not None else "none"), message.from_user.first_name]
 
-async def del_message(*messages) -> None:
+async def del_message(*messages, not_delete = []) -> None:
 	for message in messages:
 		try:
+			if message.message_id in not_delete: continue
 			await message.delete()
 		except:
 			...
 async def call_msg_answer(call, **kwargs):
-	try: await call.message.edit_text(**kwargs)
+	try: return await call.message.edit_text(**kwargs)
 	except:
-		await call.message.answer(**kwargs)
-		await del_message(call.message)
+		asyncio.get_event_loop().create_task(del_message(call.message))
+		return await call.message.answer(**kwargs)
 
 async def send_admin(bot, text, reply_markup=None):
 	for user_id in admin_ids:
@@ -143,11 +144,11 @@ def parse_num(num, is_float: bool = False) -> Union[int, float]:
 	try: return float(num.replace(',', '.')) if is_float else int(float(num.replace(',', '.')))
 	except: return None
 
-def user_format_url(user: Userx.model = None, tg_user_id: int = None, tg_username: str = None):
+def user_format_url(user = None, tg_user_id: int = None, tg_username: str = None):
 	if user:
 		tg_user_id = user.tg_user_id
 		tg_username = user.tg_username
-	return f'@{username}' if username not in ['none', 'None', None] else f'<a href="tg://user?id={user.tg_user_id}">None</a>'
+	return f'<b><a href="tg://user?id={tg_user_id}">none</a></b>' if tg_username in ['', 'none', 'None', None] else f'@{tg_username}'
 
 def date_to_text(date, text_format = '%d.%m.%Y %H:%M'):
 	if isinstance(date, int): return datetime.strftime(datetime.fromtimestamp(date), text_format)

@@ -125,7 +125,7 @@ async def input_req_(call: CallbackQuery, bot: Bot, state: FSMContext):
 	if cd[0] == 'skip' and old_question_data.get('skipable', False): # Пропустить вопрос
 		answers[old_question_key] = 'Пропущено'
 	elif cd[0] == 'continue' and old_question_data.get('is_file', False): # Закончить загрузку файлов
-		await del_message(*state_data.get('msgs', []))
+		await del_message(*state_data.get('msgs', []), not_delete=[call.message.message_id])
 		answers[old_question_key] = files.get(old_question_key, [])
 	elif cd[0] == 'back': # Назад
 		question_key, question_data, is_first, is_last = get_question(req_type, req_sub_type, answers, 'this')
@@ -152,6 +152,7 @@ async def input_req_(call: CallbackQuery, bot: Bot, state: FSMContext):
 			try: # Отмена
 				if not ast.literal_eval(cd[0]):
 					await call.answer(f'Создание {this_trns.get("l", {}).get("r", "")} отменено', show_alert=True)
+					await del_message(*state_data.get('msgs', []), call.message)
 					return await create_order(call.message, bot, state) if req_type == 'order' else await create_application(call.message, bot, state)
 			except:
 				text = message_tree_construct(req_type, req_sub_type, answers)

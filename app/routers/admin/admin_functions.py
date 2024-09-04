@@ -50,7 +50,7 @@ async def callback_admin(call: CallbackQuery, bot: Bot, state: FSMContext, custo
 			if tg_user_id in moderator_ids:
 				await call.message.edit_text(f'<b>Информация о пользователе</b>\n└ Дата регистрации:  <code>{reg_date}</code>', reply_markup=kb_admin_user(tg_user_id, user.id))
 			else:
-				await call.message.edit_text(f'<b>Информация о пользователе</b>\n├ Юзернейм:  <code>{user_format_url(user)}</code>\n├ ID телеграма:  <code>{user.tg_user_id}</code>\n└ Дата регистрации:  <code>{reg_date}</code>', reply_markup=kb_admin_user(tg_user_id, user.id))
+				await call.message.edit_text(f'<b>Информация о пользователе</b>\n├ Юзернейм: {user_format_url(user)}\n├ ID телеграма:  <code>{user.tg_user_id}</code>\n└ Дата регистрации:  <code>{reg_date}</code>', reply_markup=kb_admin_user(tg_user_id, user.id))
 	
 	elif cd[1] == 'dialogue':
 		act = cd[2]
@@ -271,7 +271,7 @@ async def input_user_search(message: Message, bot: Bot, state: FSMContext):
 	if tg_user_id in moderator_ids:
 		await message.answer(f'<b>Информация о пользователе</b>\n└ Дата регистрации:  <code>{reg_date}</code>', reply_markup=kb_admin_user(tg_user_id, user.id))
 	else:
-		await message.answer(f'<b>Информация о пользователе</b>\n├ Юзернейм:  <code>{user_format_url(user)}</code>\n├ ID телеграма:  <code>{user.tg_user_id}</code>\n└ Дата регистрации:  <code>{reg_date}</code>', reply_markup=kb_admin_user(tg_user_id, user.id))
+		await message.answer(f'<b>Информация о пользователе</b>\n├ Юзернейм: {user_format_url(user)}\n├ ID телеграма:  <code>{user.tg_user_id}</code>\n└ Дата регистрации:  <code>{reg_date}</code>', reply_markup=kb_admin_user(tg_user_id, user.id))
 
 @router.message(StateFilter('user_dialogue'))
 async def dialogue_handler(message: Message, bot: Bot, state: FSMContext):
