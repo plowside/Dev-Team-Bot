@@ -16,7 +16,7 @@ file_handler.setLevel(logging.INFO)
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(log_formatter_console)
 console_handler.setLevel(logging.INFO)
-logging.getLogger('aiogram').setLevel(logging.INFO)
+logging.getLogger('aiogram').setLevel(logging.WARNING)
 
 # Подключение настроек логгирования
 logging.basicConfig(

@@ -9,7 +9,7 @@ from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 from urllib.parse import urlencode
 
 from data.config import *
-
+from database import *
 ################################### AIOGRAM ####################################
 
 # Генерация реплай клавиатуры
@@ -143,8 +143,11 @@ def parse_num(num, is_float: bool = False) -> Union[int, float]:
 	try: return float(num.replace(',', '.')) if is_float else int(float(num.replace(',', '.')))
 	except: return None
 
-def user_format_url(user_id, username):
-	return (f'<a href="t.me/{username}">{username}</a>' if username not in ['none', None] else f'<a href="tg://user?id={user_id}">None</a>')
+def user_format_url(user: Userx.model = None, tg_user_id: int = None, tg_username: str = None):
+	if user:
+		tg_user_id = user.tg_user_id
+		tg_username = user.tg_username
+	return f'@{username}' if username not in ['none', 'None', None] else f'<a href="tg://user?id={user.tg_user_id}">None</a>'
 
 def date_to_text(date, text_format = '%d.%m.%Y %H:%M'):
 	if isinstance(date, int): return datetime.strftime(datetime.fromtimestamp(date), text_format)

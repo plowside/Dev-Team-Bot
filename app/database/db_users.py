@@ -19,6 +19,7 @@ class UserModel(BaseModel):
 
 # Работа с юзером
 class Userx:
+	model = UserModel
 	# Добавление записи
 	@staticmethod
 	async def add(user_id: int, username: str, firstname: str, **kwargs):
