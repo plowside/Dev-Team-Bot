@@ -35,7 +35,7 @@ class ExistsUserMiddleware(BaseMiddleware):
 					referrer_user_id
 				except: referrer_user_id = None
 				await Userx.add(user_id, username.lower(), firstname, referrer_from_user_id=referrer_user_id)
-				await send_admin(self.bot, f'<b>🔔 Новый пользователь!\n\n👤 Username: {user_format_url(this_user.id, this_user.username)}\n🆔 Telegram ID: <code>{this_user.id}</code></b>')
+				await send_admin(self.bot, f'<b>🔔 Новый пользователь!\n\n👤 Username: {user_format_url(tg_user_id=this_user.id, tg_username=this_user.username)}\n🆔 Telegram ID: <code>{this_user.id}</code></b>')
 			else:
 				if username.lower() != get_user.tg_username:
 					Userx.update(get_user.user_id, tg_firstname=username.lower())
