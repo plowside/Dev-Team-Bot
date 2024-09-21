@@ -38,7 +38,7 @@ class ExistsUserMiddleware(BaseMiddleware):
 				await send_admin(self.bot, f'<b>🔔 Новый пользователь!\n\n👤 Username: {user_format_url(tg_user_id=this_user.id, tg_username=this_user.username)}\n🆔 Telegram ID: <code>{this_user.id}</code></b>')
 			else:
 				if username.lower() != get_user.tg_username:
-					Userx.update(get_user.user_id, tg_firstname=username.lower())
+					Userx.update(get_user.id, tg_firstname=username.lower())
 				
 				if firstname != get_user.tg_firstname:
 					Userx.update(get_user.id, tg_username=firstname)
