@@ -1,7 +1,7 @@
 import json
 
 ### TELEGRAM ###
-telegram_token = '7306244866:AAG8kB3Uwhx71sxJ-FrhgLBDTBNQd2eeYWI' # Токен телеграм бота
+telegram_token = '7306244866:AAHy6rQwm5LJiex5P4_gfuWvWbX6otI2Oc0' # Токен телеграм бота
 admin_ids = [6315225351, 6554101798] # ID админов
 moderator_ids = [5749609907, 7321334922] # ID модераторов
 filestorage_id = -1002177894042 # ID чата для хранения файлов
