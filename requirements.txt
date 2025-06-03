@@ -1,5 +1,6 @@
 aiogram
 APScheduler
+pytz
 httpx
 typing
 asyncpg
